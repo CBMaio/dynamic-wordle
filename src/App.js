@@ -1,23 +1,28 @@
-import logo from './logo.svg';
-import './App.css';
+import logo from "./logo.svg";
+import "./App.css";
+import Main from "./Components/Main/Main";
+import { useState } from "react";
+import GameFinished from "./Components/GameFinished/GameFinished";
 
 function App() {
+  const [isFinished, setIsFinished] = useState({
+    finished: false,
+    winner: false,
+  });
+
+  const handleGame = (finish, win) => {
+    setIsFinished({
+      finished: finish,
+      winner: win,
+    });
+  };
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      {!isFinished.finished ? (
+        <Main handleGame={handleGame} />
+      ) : (
+        <GameFinished isFinished={isFinished} />
+      )}
     </div>
   );
 }
