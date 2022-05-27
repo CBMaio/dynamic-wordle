@@ -1,0 +1,24 @@
+.main-container {
+  text-align: center;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+/* boart section */
+
+.board-title-container {
+  margin-top: 25vh;
+  margin-bottom: 5vh;
+}
+
+.first-word-input {
+  font-size: 3rem;
+  border: none;
+  outline: none;
+}
+
+.first-word-input:focus {
+  outline: none;
+}

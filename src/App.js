@@ -3,6 +3,7 @@ import "./App.css";
 import Main from "./Components/Main/Main";
 import { useState } from "react";
 import GameFinished from "./Components/GameFinished/GameFinished";
+import { Container } from "@mui/material";
 
 function App() {
   const [isFinished, setIsFinished] = useState({
@@ -17,13 +18,13 @@ function App() {
     });
   };
   return (
-    <div>
+    <Container>
       {!isFinished.finished ? (
         <Main handleGame={handleGame} />
       ) : (
         <GameFinished isFinished={isFinished} />
       )}
-    </div>
+    </Container>
   );
 }
 

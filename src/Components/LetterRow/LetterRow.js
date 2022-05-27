@@ -1,7 +1,7 @@
 import { useState } from "react";
 import TableContainer from "../TableContainer/TableContainer";
 
-const LetterRow = ({ handleGame, word, userAttempts }) => {
+const LetterRow = ({ firstAttempt, handleGame, word, userAttempts }) => {
   const [enableRow, setEnableRow] = useState(0); //la fila disponible en ese momento
   const n = userAttempts; //muestra la cantidad de filas segun intentos haya disponible
 
@@ -15,6 +15,16 @@ const LetterRow = ({ handleGame, word, userAttempts }) => {
 
   return (
     <div>
+      {firstAttempt && (
+        <TableContainer
+          autocomplete={firstAttempt}
+          word={word}
+          enableRow={enableRow}
+          changeRow={changeRow}
+          handleGame={handleGame}
+        />
+      )}
+
       {[...Array(n)].map((el, index) => (
         <TableContainer
           word={word}

@@ -1,9 +1,19 @@
+import { red } from "@mui/material/colors";
 import { useEffect, useState } from "react";
+import styledComponents from "styled-components";
 import InputBox from "./InputBox";
 
-const TableContainer = ({ id, word, enableRow, changeRow, handleGame }) => {
+const TableContainer = ({
+  autocomplete,
+  id,
+  word,
+  enableRow,
+  changeRow,
+  handleGame,
+}) => {
   const [elements, setElements] = useState([]); //cantidad de letras que tiene la palabra
   let refs = []; //array de inputs
+  let firstRef = []; //array de la primer referencia, autocomplete
 
   const validateLetter = (letter) => {
     //solo reconoce letras
@@ -45,6 +55,13 @@ const TableContainer = ({ id, word, enableRow, changeRow, handleGame }) => {
       count.push(i);
     }
     setElements(count);
+    if (autocomplete) {
+      validLetter();
+    }
+  };
+
+  const validLetter = () => {
+    const userWord = autocomplete.join("");
   };
 
   const validateForm = () => {
@@ -82,28 +99,72 @@ const TableContainer = ({ id, word, enableRow, changeRow, handleGame }) => {
     createElements();
   }, []);
 
+  const position = (e, i) => {
+    let color = "";
+    if (e == word[i]) {
+      color = "var(--color-correct)";
+    } else if (word.includes(e)) {
+      color = "var(--color-present)";
+    } else {
+      color = "var(--color-absent)";
+    }
+
+    return color;
+  };
+
   return (
     <div>
       <div>
-        <form onSubmit={validateForm}>
-          <fieldset disabled={enableRow != id} style={{ border: "none" }}>
-            {elements.map((e, i) => (
-              <input
-                maxLength={1}
-                name={i}
-                type="text"
-                autoFocus={i == 0 && true}
-                onKeyUp={(event) => handleInput(event, i)}
-                key={i}
-                disabled={i != 0 && true}
-                ref={(ref) => (refs[i] = { ref, value: "" })}
-              />
-            ))}
-          </fieldset>
-        </form>
+        {autocomplete ? (
+          autocomplete.map((e, i) => (
+            <CustomInput
+              maxLength={1}
+              name={i}
+              type="text"
+              value={e}
+              key={i}
+              disabled={true}
+              style={{ color: "var(--white)", background: position(e, i) }}
+            />
+          ))
+        ) : (
+          <form onSubmit={validateForm}>
+            <fieldset disabled={enableRow != id} style={{ border: "none" }}>
+              {elements.map((e, i) => (
+                <CustomInput
+                  maxLength={1}
+                  name={i}
+                  type="text"
+                  autoFocus={i == 0 && true}
+                  onKeyUp={(event) => handleInput(event, i)}
+                  key={i}
+                  disabled={i != 0 && true}
+                  ref={(ref) => (refs[i] = { ref, value: "" })}
+                />
+              ))}
+            </fieldset>
+          </form>
+        )}
       </div>
     </div>
   );
 };
 
 export default TableContainer;
+
+const CustomInput = styledComponents.input`
+  {
+    // border: 1px solid;
+    width: 50px;
+    font-size: 2.75rem;
+    margin: 5px 10px;
+    text-align: center;
+    outline: none;
+    background; transparent;
+    border: none;
+    border-bottom: 1px solid bar(--black);
+    padding: 10px;
+    font-family; "Roboto";
+    border-radius: 5px;
+  }
+`;
